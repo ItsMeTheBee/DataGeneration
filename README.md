@@ -1,7 +1,7 @@
 # DataGeneration
 Automatic data generation for trainining object detection networks. 
 
-#HowTo
+# HowTo
 - Build your scene using Blender
 - Adapt the config.ini File
 - Create a "renders" and "labels" folder to store the files
