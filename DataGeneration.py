@@ -51,9 +51,9 @@ def createCameraMods(camera):
 	mods = list()
 	cameras = list()
 	cameras.append(camera)
-	modXPos = ShuffleXPos([5, 25], cameras, False)
+	modXPos = ShuffleXPos([1500, 2500], cameras, False)
 	mods.append(modXPos)
-	modYPos = ShuffleYPos([-12, 22], cameras, False)
+	modYPos = ShuffleYPos([-400, 600], cameras, False)
 	mods.append(modYPos)
 	return mods
 
@@ -67,10 +67,12 @@ def createLightMods(lights):
 
 def createObjectMods(objects):
 	mods = list()
-	modXPos = ShuffleXPos([-5, 30], objects, True)
+	modXPos = ShuffleXPos([-500, 500], objects, True)
 	mods.append(modXPos)
-	modYPos = ShuffleYPos([-20, 36], objects, True)
+	modYPos = ShuffleYPos([-500, 500], objects, True)
 	mods.append(modYPos)
+	modZPos = ShuffleZPos([-500, 500], objects, True)
+	mods.append(modZPos)
 	modZRot = ShuffleZRot([0, 360], objects, True)
 	mods.append(modZRot)
 	return mods
@@ -131,10 +133,14 @@ if __name__ == '__main__':
 	for mesh in mesh_objects:
 		mesh_obj.append(mesh)
 
-	special_obj = list()
-	special_objects = [bpy.data.objects[name] for name in special_names]
-	for mesh in special_objects:
-		special_obj.append(mesh)
+	if special_names:
+		try:
+			special_obj = list()
+			special_objects = [bpy.data.objects[name] for name in special_names]
+			for mesh in special_objects:
+				special_obj.append(mesh)
+		except Exception as e:
+			print(e)
 
 	steps = config['General']['Steps']
 
