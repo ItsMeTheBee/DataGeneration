@@ -17,7 +17,7 @@ class ShuffleRGBColor(ShuffleColor):
 		nodes = mat.node_tree.nodes
 		principled = nodes.get("Principled BSDF")
 		principled.inputs[0].default_value = self.get_random_color()
-		bpy.context.scene.update()
+		bpy.context.view_layer.update()
 
 	def get_random_color(self):
 		r, g, b = [random.random() for i in range(3)]

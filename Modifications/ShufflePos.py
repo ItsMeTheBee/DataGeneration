@@ -22,7 +22,7 @@ class ShufflePos(Modification):
 					check = self.are_objects_intersecting(obj, obj_check)
 					if check:
 						obj.hide_render = True
-						bpy.context.scene.update()
+						bpy.context.view_layer.update()
 				if obj.hide_render is False:
 					object_check.append(obj)
 
@@ -48,17 +48,17 @@ class ShuffleXPos(ShufflePos):
 	def Action(self, obj):
 		obj.hide_render = False
 		obj.location.x = 0.01 * random.randrange(self.Range[0], self.Range[1])
-		bpy.context.scene.update()
+		bpy.context.view_layer.update()
 
 class ShuffleYPos(ShufflePos):
 	def Action(self, obj):
 		obj.hide_render = False
 		obj.location.y = 0.01 * random.randrange(self.Range[0], self.Range[1])
-		bpy.context.scene.update()
+		bpy.context.view_layer.update()
 
 class ShuffleZPos(ShufflePos):
 	def Action(self, obj):
 		print("shuffling Z")
 		obj.hide_render = False
 		obj.location.z = 0.01 * random.randrange(self.Range[0], self.Range[1])
-		bpy.context.scene.update()
+		bpy.context.view_layer.update()

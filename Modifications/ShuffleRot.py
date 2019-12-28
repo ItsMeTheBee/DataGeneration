@@ -23,7 +23,7 @@ class ShuffleRot(Modification):
 					check = self.are_objects_intersecting(obj, obj_check)
 					if check:
 						obj.hide_render = True
-						bpy.context.scene.update()
+						bpy.context.view_layer.update()
 				if obj.hide_render is False:
 					object_check.append(obj)
 
@@ -50,16 +50,16 @@ class ShuffleXRot(ShuffleRot):
 	def Action(self, obj):
 		obj.hide_render = False
 		obj.rotation_euler.x = 0.01 * random.randrange(self.Range[0], self.Range[1]) * 180/math.pi
-		bpy.context.scene.update()
+		bpy.context.view_layer.update()
 
 class ShuffleYRot(ShuffleRot):
 	def Action(self, obj):
 		obj.hide_render = False
 		obj.rotation_euler.y = 0.01 * random.randrange(self.Range[0], self.Range[1])
-		bpy.context.scene.update()
+		bpy.context.view_layer.update()
 
 class ShuffleZRot(ShuffleRot):
 	def Action(self, obj):
 		obj.hide_render = False
 		obj.rotation_euler.z = 0.01 * random.randrange(self.Range[0], self.Range[1])
-		bpy.context.scene.update()
+		bpy.context.view_layer.update()

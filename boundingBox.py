@@ -20,7 +20,8 @@ def camera_view_bounds_2d(scene, camera_object, mesh_object):
     """ Get the inverse transformation matrix. """
     matrix = camera_object.matrix_world.normalized().inverted()
     """ Create a new mesh data block, using the inverse transform matrix to undo any transformations. """
-    mesh = mesh_object.to_mesh(scene, True, 'RENDER')
+    #mesh = mesh_object.to_mesh(scene, True, 'RENDER')
+    mesh = mesh_object.to_mesh()
     mesh.transform(mesh_object.matrix_world)
     mesh.transform(matrix)
 
@@ -50,7 +51,7 @@ def camera_view_bounds_2d(scene, camera_object, mesh_object):
         lx.append(x)
         ly.append(y)
 
-    bpy.data.meshes.remove(mesh)
+    #mesh.to_mesh_clear()
 
     """ Image is not in view if all the mesh verts were ignored """
     if not lx or not ly:

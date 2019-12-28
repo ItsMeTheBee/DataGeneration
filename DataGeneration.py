@@ -31,6 +31,7 @@ def render(scene, camera_object, mesh_objects, file_prefix="render"):
 
 def createYoloTxtFile(scene, camera_object, mesh_objects, file_prefix="render"):
 	#names_to_labels = { 'Cube': 0, 'Cube.001': 1, 'Cube.002': 2, 'Cube.003': 3, 'Cube.004': 4}
+	print("Creating labels")
 	filename = str(file_prefix)
 	path = os.path.join(base_dir+'/labels/', filename + '.txt')
 	with open(path, 'w+') as file:
@@ -51,9 +52,9 @@ def createCameraMods(camera):
 	mods = list()
 	cameras = list()
 	cameras.append(camera)
-	modXPos = ShuffleXPos([1500, 2500], cameras, False)
+	modXPos = ShuffleXPos([5, 25], cameras, False)
 	mods.append(modXPos)
-	modYPos = ShuffleYPos([-400, 600], cameras, False)
+	modYPos = ShuffleYPos([-12, 22], cameras, False)
 	mods.append(modYPos)
 	return mods
 
@@ -67,12 +68,10 @@ def createLightMods(lights):
 
 def createObjectMods(objects):
 	mods = list()
-	modXPos = ShuffleXPos([-500, 500], objects, True)
+	modXPos = ShuffleXPos([-5, 30], objects, True)
 	mods.append(modXPos)
-	modYPos = ShuffleYPos([-500, 500], objects, True)
+	modYPos = ShuffleYPos([-20, 36], objects, True)
 	mods.append(modYPos)
-	modZPos = ShuffleZPos([-500, 500], objects, True)
-	mods.append(modZPos)
 	modZRot = ShuffleZRot([0, 360], objects, True)
 	mods.append(modZRot)
 	return mods
@@ -102,45 +101,48 @@ def batch_render(scene, camera, lamp, objects, special, steps):
 			mod.performAction()
 		file_prefix=datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
 		render(scene, camera, objects, file_prefix)
+		print("render done")
 		createYoloTxtFile(scene, camera, objects, file_prefix)
 	print("DONE! =)")
 
 # ____________________________________________ Read config values & Load objects
 
 if __name__ == '__main__':
-	config = configparser.ConfigParser()
+	config = configparser.ConfigParser(allow_no_value=True)
 	config.read(os.path.join(base_dir, 'config.ini'))
+	bpy.context.view_layer.update()
 
 	scene = bpy.data.scenes[config['Objects']['Scene']]
+
 	camera_object = bpy.data.objects[config['Objects']['Camera']]
-
-	lamp_names = config['Objects']['Lamps'].split(',')
-	lamp_obj = [bpy.data.objects[name] for name in lamp_names]
-
-	bpy.context.scene.update()
-	special_names = config['Objects']['Special'].split(',')
-
-	ignore_names = config['Objects']['Ignore'].split(',')
-	if ignore_names:
-		print("ignoring ", ignore_names)
-		available = [obj.name for obj in bpy.data.objects]
-		mesh_names = [x for x in available if x not in ignore_names]
-	else: 
-		mesh_names = config['DEFAULT']['Names'].split(',')
-
+	 
+	lamp_obj = list()
 	mesh_obj = list()
-	mesh_objects = [bpy.data.objects[name] for name in mesh_names]
-	for mesh in mesh_objects:
-		mesh_obj.append(mesh)
+	special_obj = list()
 
-	if special_names:
-		try:
-			special_obj = list()
-			special_objects = [bpy.data.objects[name] for name in special_names]
-			for mesh in special_objects:
-				special_obj.append(mesh)
-		except Exception as e:
-			print(e)
+	try:
+		lamp_names = config['Objects']['Lamps'].split(',')
+		special_names= config['Objects']['Special'].split(',')
+		ignore_names = config['Objects']['Ignore'].split(',')
+
+		lamp_obj = [bpy.data.objects[name] for name in lamp_names]
+
+		if ignore_names:
+			print("ignoring ", ignore_names)
+			available = [obj.name for obj in bpy.data.objects]
+			mesh_names = [x for x in available if x not in ignore_names]
+		else: 
+			mesh_names = config['DEFAULT']['Names'].split(',')
+
+		mesh_objects = [bpy.data.objects[name] for name in mesh_names]
+		for mesh in mesh_objects:
+			mesh_obj.append(mesh)
+
+		special_objects = [bpy.data.objects[name] for name in special_names]
+		for mesh in special_objects:
+			special_obj.append(mesh)
+	except:
+		print("Failed to parse objects from config")
 
 	steps = config['General']['Steps']
 
