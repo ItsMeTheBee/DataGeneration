@@ -37,6 +37,7 @@ def createYoloTxtFile(scene, camera_object, mesh_objects, file_prefix="render"):
 	with open(path, 'w+') as file:
 		""" Get the bounding box coordinates for each mesh """
 		for object in mesh_objects:
+			print("labeling ", object.name)
 			if object.hide_render is True:
 				print(object.name + " is hidden - not labeling this!")
 				continue
@@ -92,7 +93,7 @@ def createMods(camera, lamp, objects, special):
 	mods.extend(createObjectMods(objects))
 	return mods
 
-# ____________________________________________ Main Loop
+# ____________________________________________ Apply every modification and create image + labels
 
 def batch_render(scene, camera, lamp, objects, special, steps):
 	mods = createMods(camera, lamp, objects, special)
@@ -104,6 +105,37 @@ def batch_render(scene, camera, lamp, objects, special, steps):
 		print("render done")
 		createYoloTxtFile(scene, camera, objects, file_prefix)
 	print("DONE! =)")
+
+# ____________________________________________ Loop through each frame and create image + labels 
+
+def path_render(scene, camera, objects, steps):
+	for i in range(scene.frame_start,scene.frame_end):
+		if i > steps:
+			print("done - reached desired image count")
+			return
+		scene.frame_current = i
+		file_prefix=datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
+		render(scene, camera, objects, file_prefix)
+		createYoloTxtFile(scene, camera, objects, file_prefix)
+	print("done - no frames left to render")
+
+def load_objects(names, ignore_names=None, category=""):
+	mesh_obj=list()
+	if ignore_names is not None:
+		available = [obj.name for obj in bpy.data.objects]
+		mesh_names = [x for x in available if x not in ignore_names]
+
+	elif names is not None:
+		mesh_names = names.split(',')
+
+	else:
+		print("Unable to load ", category)
+		return mesh_obj
+
+	mesh_objects = [bpy.data.objects[name] for name in mesh_names]
+	for mesh in mesh_objects:
+		mesh_obj.append(mesh)
+	return mesh_obj
 
 # ____________________________________________ Read config values & Load objects
 
@@ -117,33 +149,18 @@ if __name__ == '__main__':
 	camera_object = bpy.data.objects[config['Objects']['Camera']]
 	 
 	lamp_obj = list()
-	mesh_obj = list()
 	special_obj = list()
+	mesh_obj = list()
 
-	try:
-		lamp_names = config['Objects']['Lamps'].split(',')
-		special_names= config['Objects']['Special'].split(',')
-		ignore_names = config['Objects']['Ignore'].split(',')
-
-		lamp_obj = [bpy.data.objects[name] for name in lamp_names]
-
-		if ignore_names:
-			print("ignoring ", ignore_names)
-			available = [obj.name for obj in bpy.data.objects]
-			mesh_names = [x for x in available if x not in ignore_names]
-		else: 
-			mesh_names = config['DEFAULT']['Names'].split(',')
-
-		mesh_objects = [bpy.data.objects[name] for name in mesh_names]
-		for mesh in mesh_objects:
-			mesh_obj.append(mesh)
-
-		special_objects = [bpy.data.objects[name] for name in special_names]
-		for mesh in special_objects:
-			special_obj.append(mesh)
-	except:
-		print("Failed to parse objects from config")
+	lamp_obj = load_objects(config['Objects']['Lamps'], category="Lamps")
+	mesh_obj = load_objects(config['Objects']['Names'], config['Objects']['Ignore'], "Objects")
+	special_obj = load_objects(config['Objects']['Special'], category="Special")
 
 	steps = config['General']['Steps']
+	follow_path = config.getboolean('General','FollowPath')
 
-	batch_render(scene, camera_object, lamp_obj, mesh_obj, special_obj, int(steps))
+	if follow_path:
+		path_render(scene, camera_object, mesh_obj, int(steps))
+
+	else:
+		batch_render(scene, camera_object, lamp_obj, mesh_obj, special_obj, int(steps))
