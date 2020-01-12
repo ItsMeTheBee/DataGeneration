@@ -16,15 +16,15 @@ import boundingBox
 from Modifications.ShufflePos import ShuffleXPos, ShuffleYPos, ShuffleZPos
 from Modifications.ShuffleRot import ShuffleXRot, ShuffleYRot, ShuffleZRot
 from Modifications.ShuffleColor import ShuffleMaterial, ShuffleRGBColor
+from Modifications.MaskBlackNWhite import MaskBlackNWhite
 
 # ____________________________________________ Create image
 
-def render(scene, camera_object, mesh_objects, file_prefix="render"):
+def render(scene, camera_object, mesh_objects, file_prefix="render", folder="renders"):
 	# Rendering
 	# https://blender.stackexchange.com/questions/1101/blender-rendering-automation-build-script
-	print("rendering")
 	filename = str(file_prefix)
-	bpy.context.scene.render.filepath = os.path.join(base_dir+'/renders/', filename + '.png')
+	bpy.context.scene.render.filepath = os.path.join(base_dir+ "/" + folder + "/", filename + '.png')
 	bpy.ops.render.render(write_still=True)
 
 # ____________________________________________ Create labels
@@ -119,6 +119,31 @@ def path_render(scene, camera, objects, steps):
 		createYoloTxtFile(scene, camera, objects, file_prefix)
 	print("done - no frames left to render")
 
+def mask_render(scene, camera, objects, steps, mod):
+	print("rendering original images" )
+	for i in range(scene.frame_start,scene.frame_end):
+		if i > steps:
+			print("done - reached desired image count")
+			break
+		scene.frame_current = i
+		file_prefix=i
+		render(scene, camera, objects, file_prefix)
+
+	scene.frame_current = 0
+	mod.performAction()
+
+	print("rendering masked images" )
+	for j in range(scene.frame_start,scene.frame_end):
+		if j > steps:
+			print("done - reached desired image count")
+			break
+		scene.frame_current = j
+		file_prefix=j
+		render(scene, camera, objects, file_prefix, "labels")
+
+	print("done - no frames left to render")
+	mod.restoreColor()
+
 def load_objects(names, ignore_names=None, category=""):
 	mesh_obj=list()
 	if ignore_names is not None:
@@ -144,10 +169,12 @@ if __name__ == '__main__':
 	config.read(os.path.join(base_dir, 'config.ini'))
 	bpy.context.view_layer.update()
 
-	scene = bpy.data.scenes[config['Objects']['Scene']]
+	scene = bpy.data.scenes[config['General']['Scene']]
+	camera_object = bpy.data.objects[config['General']['Camera']]
+	mode = config['General']['Mode']
+	print("MODE: ",mode)
+	steps = config['General']['Steps']
 
-	camera_object = bpy.data.objects[config['Objects']['Camera']]
-	 
 	lamp_obj = list()
 	special_obj = list()
 	mesh_obj = list()
@@ -156,11 +183,31 @@ if __name__ == '__main__':
 	mesh_obj = load_objects(config['Objects']['Names'], config['Objects']['Ignore'], "Objects")
 	special_obj = load_objects(config['Objects']['Special'], category="Special")
 
-	steps = config['General']['Steps']
-	follow_path = config.getboolean('General','FollowPath')
+	if mode != "Mask":
+		if mode == "Mods":	 
+			batch_render(scene, camera_object, lamp_obj, mesh_obj, special_obj, int(steps))
 
-	if follow_path:
-		path_render(scene, camera_object, mesh_obj, int(steps))
+		if mode == "Path":
+			path_render(scene, camera_object, mesh_obj, int(steps))
+
+	if mode == "Mask":
+		mask_true_obj = list()
+		mask_false_obj = list()
+
+		mask_true_obj = load_objects(config['Mask']['Mask_True_Objects'], category="Mask True Objects")
+		mask_false_obj = load_objects(config['Mask']['Mask_False_Objects'], category="Mask False Objects")
+
+		mask_true_material = config['Mask']['Mask_True_Mat']
+		mask_false_material = config['Mask']['Mask_False_Mat']
+
+		mask_false_color = config['Mask']['Mask_False_Color'].split(",")
+		mask_false_color = list(map(int, mask_false_color))
+
+		mask_true_color = config['Mask']['Mask_True_Color'].split(",")
+		mask_true_color = list(map(int, mask_true_color))
+
+		maskMod = MaskBlackNWhite(mask_true_obj, mask_false_obj, mask_true_color, mask_false_color, mask_true_material, mask_false_material)
+		mask_render(scene, camera_object, mesh_obj, int(steps), maskMod)
 
 	else:
-		batch_render(scene, camera_object, lamp_obj, mesh_obj, special_obj, int(steps))
+		print("Please select an available Mode")
