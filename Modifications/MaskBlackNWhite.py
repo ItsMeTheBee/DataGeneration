@@ -32,9 +32,10 @@ class MaskBlackNWhite(Modification):
             test_true = obj.data.materials.get(self.mask_true_material)
             if test_true is None:
                 obj.data.materials.append(mat_true)
-                obj.active_material = mat_true
-                print("Set ", obj.name, " material to ", self.mask_true_material)
-                bpy.context.view_layer.update()
+                
+            obj.active_material = mat_true
+            print("Set ", obj.name, " material to ", self.mask_true_material)
+            bpy.context.view_layer.update()
 
         else:
             test_false = obj.data.materials.get(self.mask_false_material)
