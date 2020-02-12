@@ -3,7 +3,7 @@
 import bpy
 import numpy as np
 
-def camera_view_bounds_2d(scene, camera_object, mesh_object):
+def camera_view_bounds_2d(scene, camera_object, mesh_object, bounds=[0,0,0,0]):
     """
     Returns camera space bounding box of the mesh object.
 
@@ -57,23 +57,39 @@ def camera_view_bounds_2d(scene, camera_object, mesh_object):
     if not lx or not ly:
         return None
 
-    min_x = np.clip(min(lx), 0.0, 1.0)
-    min_y = np.clip(min(ly), 0.0, 1.0)
-    max_x = np.clip(max(lx), 0.0, 1.0)
-    max_y = np.clip(max(ly), 0.0, 1.0)
+    min_x = min(lx) #np.clip(min(lx), 0.0, 1.0)
+    min_y = min(ly) #np.clip(min(ly), 0.0, 1.0)
+    max_x = max(lx) #np.clip(max(lx), 0.0, 1.0)
+    max_y = max(ly) #np.clip(max(ly), 0.0, 1.0)
 
-    #print (mesh_object.name, "\n", 'min x ',min_x, ' max x ', max_x, 'min y ',min_y, ' max y ', max_y) 
+    """ Figure out the rendered image size - not needed right now
+    render = scene.render
+    fac = render.resolution_percentage * 0.01
+    dim_x = render.resolution_x * fac
+    dim_y = render.resolution_y * fac """
+
+    if min_x < bounds[0]:
+        print("Bounding box of ", mesh_object.name ," outside of boundaries - min_x is ", min_x, " boundary is ", bounds[0])
+        return None
+    if min_y < bounds[1]:
+        print("Bounding box of ", mesh_object.name ," outside of boundaries - min_y is ", min_y, " boundary is ", bounds[1])
+        return None
+    if max_x > bounds[2]:
+        print("Bounding box of ", mesh_object.name ," outside of boundaries - max_x is ", max_x, " boundary is ", bounds[2])
+        return None
+    if max_y > bounds[3]:
+        print("Bounding box of ", mesh_object.name ," outside of boundaries - max_y is ", max_y, " boundary is ", bounds[3])
+        return None
+
+    
+    min_x = np.clip(min_x, 0.0, 1.0)
+    min_y = np.clip(min_y, 0.0, 1.0)
+    max_x = np.clip(max_x, 0.0, 1.0)
+    max_y = np.clip(max_y, 0.0, 1.0)
 
     """ Image is not in view if both bounding points exist on the same side """
     if min_x == max_x or min_y == max_y:
         return None
-
-    """ Figure out the rendered image size """
-    render = scene.render
-    fac = render.resolution_percentage * 0.01
-    dim_x = render.resolution_x * fac
-    dim_y = render.resolution_y * fac
-
 
     # we use yolo format -> x and y of bounding box center, width and height of bounding box - everything in % of total picture size
     #return (min_x, min_y), (max_x, max_y)
@@ -83,7 +99,7 @@ def camera_view_bounds_2d(scene, camera_object, mesh_object):
     mid_y = 1- ((min_y + max_y) / 2)
     height = (max_y - min_y) 
 
-    #print ("\n", 'mid x ',mid_x, ' mid y ', mid_y, 'width ',width, ' height ', height)
+    print ("\n", 'mid x ',mid_x, ' mid y ', mid_y, 'width ',width, ' height ', height)
 
     return ([mid_x, mid_y, width, height])
 
