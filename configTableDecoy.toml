@@ -1,0 +1,422 @@
+[General]
+Steps = 1000
+Camera = "Camera"
+Scene = "Scene"
+ShuffleWorld = true
+Mode = "Mods"
+# x_min, y_min, x_max, y_max
+Boundaries = [-0.05,-0.05,1.05,1.05]
+
+[Objects]
+Names= ""
+Ignore= ["Camera","CameraLight", "workstation", "laubbaum", "nadelbaum"]
+Lamps = ""
+Camera = "Camera"
+Special= ["workstation"]         #["shelve4","shelve3","shelve2","shelve1"]
+Decoy= ["laubbaum", "nadelbaum"]
+
+[workstation]
+[workstation.Color]
+NodeName="Principled BSDF"
+PropertyName="Base Color"
+value1 = [0.0, 1.0]
+value2 = [0.0, 0.05]
+value3 = [0.8, 1.0]
+mode = "hsv"
+
+[workstation.PrincipledBSDF]
+Metallic=[0.0, 0.3]
+Specular=[0.2, 0.6]
+SpecularTint=[0.0, 0.6]
+Roughness=[0.2, 0.9]
+Anisotropic=[0.0, 0.9]
+AnisotropicRotation=[0.0, 0.9]
+Sheen=[0.0, 0.2]
+SheenTint=[0.0, 0.8]
+Clearcoat=[0.0, 0.8]
+ClearcoatRoughness=[0.0, 0.8]
+
+[small_black_alu]
+visibility_thresh = 0.2
+
+[small_black_alu.Color]
+NodeName="Principled BSDF"
+PropertyName="Base Color"
+value1 = [0.0, 0.0]
+value2 = [0.0, 0.0]
+value3 = [0.0, 0.3]
+mode = "hsv"
+
+[small_black_alu.PrincipledBSDF]
+Metallic=[0.4, 1.0]
+Specular=[0.2, 0.6]
+SpecularTint=[0.0, 0.6]
+Roughness=[0.3, 1.0]
+Anisotropic=[0.0, 0.9]
+AnisotropicRotation=[0.0, 0.9]
+Sheen=[0.0, 0.2]
+SheenTint=[0.0, 0.2]
+Clearcoat=[0.0, 0.8]
+ClearcoatRoughness=[0.0, 0.8]
+
+[small_grey_alu]
+visibility_thresh = 0.2
+
+[small_grey_alu.Color]
+NodeName="Principled BSDF"
+PropertyName="Base Color"
+value1 = [0.0, 0.0]
+value2 = [0.0, 0.0]
+value3 = [0.7, 1.0]
+mode = "hsv"
+
+[small_grey_alu.PrincipledBSDF]
+Metallic=[0.3, 0.6]
+Specular=[0.2, 0.6]
+SpecularTint=[0.0, 0.6]
+Roughness=[0.3, 0.6]
+Anisotropic=[0.0, 0.9]
+AnisotropicRotation=[0.0, 0.9]
+Sheen=[0.0, 0.2]
+SheenTint=[0.0, 0.2]
+Clearcoat=[0.0, 0.8]
+ClearcoatRoughness=[0.0, 0.8]
+
+[large_black_alu]
+visibility_thresh = 0.1
+
+[large_black_alu.Color]
+NodeName="Principled BSDF"
+PropertyName="Base Color"
+value1 = [0.0, 0.0]
+value2 = [0.0, 0.0]
+value3 = [0.0, 0.3]
+mode = "hsv"
+[large_black_alu.PrincipledBSDF]
+Metallic=[0.4, 1.0]
+Specular=[0.2, 0.6]
+SpecularTint=[0.0, 0.6]
+Roughness=[0.3, 1.0]
+Anisotropic=[0.0, 0.9]
+AnisotropicRotation=[0.0, 0.9]
+Sheen=[0.0, 0.2]
+SheenTint=[0.0, 0.2]
+Clearcoat=[0.0, 0.8]
+ClearcoatRoughness=[0.0, 0.8]
+
+[large_grey_alu]
+visibility_thresh = 0.1
+
+[large_grey_alu.Color]
+NodeName="Principled BSDF"
+PropertyName="Base Color"
+value1 = [0.0, 0.0]
+value2 = [0.0, 0.0]
+value3 = [0.7, 1.0]
+mode = "hsv"
+[large_grey_alu.PrincipledBSDF]
+Metallic=[0.3, 0.6]
+Specular=[0.2, 0.6]
+SpecularTint=[0.0, 0.6]
+Roughness=[0.3, 0.6]
+Anisotropic=[0.0, 0.9]
+AnisotropicRotation=[0.0, 0.9]
+Sheen=[0.0, 0.2]
+SheenTint=[0.0, 0.2]
+Clearcoat=[0.0, 0.8]
+ClearcoatRoughness=[0.0, 0.8]
+
+[bolt]
+visibility_thresh = 0.1
+
+[bolt.Color]
+NodeName="Principled BSDF"
+PropertyName="Base Color"
+value1 = [0.0, 0.0]
+value2 = [0.0, 0.0]
+value3 = [0.0, 0.2]
+mode = "hsv"
+[bolt.PrincipledBSDF]
+Metallic=[0.8, 1.0]
+Specular=[0.2, 0.6]
+SpecularTint=[0.0, 0.6]
+Roughness=[0.1, 0.8]
+Anisotropic=[0.0, 0.9]
+AnisotropicRotation=[0.0, 0.9]
+Sheen=[0.0, 0.2]
+SheenTint=[0.0, 0.2]
+Clearcoat=[0.0, 0.8]
+ClearcoatRoughness=[0.0, 0.8]
+
+[small_nut]
+visibility_thresh = 0.2
+
+[small_nut.Color]
+NodeName="Principled BSDF"
+PropertyName="Base Color"
+value1 = [0.0, 0.0]
+value2 = [0.0, 0.0]
+value3 = [0.1, 0.3]
+mode = "hsv"
+[small_nut.PrincipledBSDF]
+Metallic=[0.3, 0.6]
+Specular=[0.0, 0.2]
+SpecularTint=[0.0, 0.2]
+Roughness=[0.1, 0.8]
+Anisotropic=[0.0, 0.9]
+AnisotropicRotation=[0.0, 0.9]
+Sheen=[0.0, 0.2]
+SheenTint=[0.0, 0.2]
+Clearcoat=[0.0, 0.8]
+ClearcoatRoughness=[0.0, 0.8]
+
+[large_nut]
+visibility_thresh = 0.1
+
+[large_nut.Color]
+NodeName="Principled BSDF"
+PropertyName="Base Color"
+value1 = [0.0, 0.0]
+value2 = [0.0, 0.0]
+value3 = [0.1, 0.3]
+mode = "hsv"
+[large_nut.PrincipledBSDF]
+Metallic=[0.3, 0.6]
+Specular=[0.0, 0.2]
+SpecularTint=[0.0, 0.2]
+Roughness=[0.1, 0.8]
+Anisotropic=[0.0, 0.9]
+AnisotropicRotation=[0.0, 0.9]
+Sheen=[0.0, 0.2]
+SheenTint=[0.0, 0.2]
+Clearcoat=[0.0, 0.8]
+ClearcoatRoughness=[0.0, 0.8]
+
+[plastic_tube]
+visibility_thresh = 0.1
+
+[plastic_tube.Color]
+NodeName="Principled BSDF"
+PropertyName="Base Color"
+value1 = [0.0, 0.0]
+value2 = [0.0, 0.0]
+value3 = [0.0, 0.2]
+mode = "hsv"
+[plastic_tube.PrincipledBSDF]
+Metallic=[0.0, 0.3]
+Specular=[0.0, 0.2]
+SpecularTint=[0.1, 0.4]
+Roughness=[0.3, 0.8]
+Anisotropic=[0.0, 0.9]
+AnisotropicRotation=[0.0, 0.9]
+Sheen=[0.0, 0.2]
+SheenTint=[0.2, 0.5]
+Clearcoat=[0.05, 0.2]
+ClearcoatRoughness=[0.0, 0.8]
+
+[bearing_box]
+visibility_thresh = 0.1
+
+[bearing_box.Color]
+NodeName="Mix"
+PropertyName="Color2"
+value1 = [0.0, 0.0]
+value2 = [0.0, 0.0]
+value3 = [0.7, 1.0]
+mode = "hsv"
+[bearing_box.PrincipledBSDF]
+Metallic=[0.8, 1.0]
+Specular=[0.2, 0.6]
+SpecularTint=[0.0, 0.6]
+Roughness=[0.2, 0.7]
+Anisotropic=[0.0, 0.9]
+AnisotropicRotation=[0.0, 0.9]
+Sheen=[0.0, 0.2]
+SheenTint=[0.0, 0.2]
+Clearcoat=[0.0, 0.8]
+ClearcoatRoughness=[0.0, 0.8]
+
+[bearing]
+visibility_thresh = 0.05
+
+[bearing.Color]
+NodeName="Mix"
+PropertyName="Color2"
+value1 = [0.0, 0.0]
+value2 = [0.0, 0.0]
+value3 = [0.7, 1.0]
+mode = "hsv"
+[bearing.PrincipledBSDF]
+Metallic=[0.5, 0.8]
+Specular=[0.1, 0.5]
+SpecularTint=[0.0, 0.6]
+Roughness=[0.2, 0.5]
+Anisotropic=[0.0, 0.9]
+AnisotropicRotation=[0.0, 0.9]
+Sheen=[0.0, 0.2]
+SheenTint=[0.0, 0.2]
+Clearcoat=[0.0, 0.8]
+ClearcoatRoughness=[0.0, 0.8]
+
+[axis]
+visibility_thresh = 0.1
+
+[axis.Color]
+NodeName="Mix"
+PropertyName="Color2"
+value1 = [0.0, 0.0]
+value2 = [0.0, 0.0]
+value3 = [0.65, 1.0]
+mode = "hsv"
+[axis.PrincipledBSDF]
+Metallic=[0.6, 0.9]
+Specular=[0.2, 0.6]
+SpecularTint=[0.0, 0.6]
+Roughness=[0.2, 0.4]
+Anisotropic=[0.0, 0.9]
+AnisotropicRotation=[0.0, 0.9]
+Sheen=[0.0, 0.2]
+SheenTint=[0.0, 0.2]
+Clearcoat=[0.0, 0.8]
+ClearcoatRoughness=[0.0, 0.8]
+
+[distance_tube]
+visibility_thresh = 0.01
+
+[distance_tube.Color]
+NodeName="Mix"
+PropertyName="Color2"
+value1 = [0.0, 0.0]
+value2 = [0.0, 0.0]
+value3 = [0.8, 1.0]
+mode = "hsv"
+[distance_tube.PrincipledBSDF]
+Metallic=[0.5, 0.9]
+Specular=[0.2, 0.6]
+SpecularTint=[0.0, 0.6]
+Roughness=[0.2, 0.5]
+Anisotropic=[0.0, 0.9]
+AnisotropicRotation=[0.0, 0.9]
+Sheen=[0.0, 0.2]
+SheenTint=[0.0, 0.2]
+Clearcoat=[0.0, 0.8]
+ClearcoatRoughness=[0.0, 0.8]
+
+[motor]
+visibility_thresh = 0.2
+
+[motor.Color]
+NodeName="Mix"
+PropertyName="Color2"
+value1 = [0.0, 0.0]
+value2 = [0.0, 0.0]
+value3 = [0.0, 0.1]
+mode = "hsv"
+[motor.PrincipledBSDF]
+Metallic=[0.0, 0.9]
+Specular=[0.1, 0.4]
+SpecularTint=[0.1, 0.4]
+Roughness=[0.5, 1.0]
+Anisotropic=[0.0, 0.9]
+AnisotropicRotation=[0.0, 0.9]
+Sheen=[0.0, 0.2]
+SheenTint=[0.2, 0.5]
+Clearcoat=[0.05, 0.2]
+ClearcoatRoughness=[0.0, 0.8]
+
+[blue_container]
+visibility_thresh = 0.5
+
+[blue_container.Color]
+NodeName="Principled BSDF"
+PropertyName="Base Color"
+value1 = [0.55, 0.7]
+value2 = [0.4, 0.9]
+value3 = [0.4, 0.9]
+mode = "hsv"
+[blue_container.PrincipledBSDF]
+Metallic=[0.0, 0.3]
+Specular=[0.2, 0.7]
+SpecularTint=[0.1, 0.4]
+Roughness=[0.1, 0.5]
+Anisotropic=[0.0, 0.9]
+AnisotropicRotation=[0.0, 0.9]
+Sheen=[0.0, 0.5]
+SheenTint=[0.3, 0.8]
+Clearcoat=[0.05, 0.2]
+ClearcoatRoughness=[0.0, 0.8]
+
+[red_container]
+visibility_thresh = 0.5
+
+[red_container.Color]
+NodeName="Principled BSDF"
+PropertyName="Base Color"
+value1 = [0.95, 1.0]
+value2 = [0.5, 0.9]
+value3 = [0.4, 0.9]
+mode = "hsv"
+[red_container.PrincipledBSDF]
+Metallic=[0.0, 0.3]
+Specular=[0.2, 0.7]
+SpecularTint=[0.1, 0.4]
+Roughness=[0.1, 0.5]
+Anisotropic=[0.0, 0.9]
+AnisotropicRotation=[0.0, 0.9]
+Sheen=[0.0, 0.5]
+SheenTint=[0.3, 0.8]
+Clearcoat=[0.05, 0.2]
+ClearcoatRoughness=[0.0, 0.8]
+
+[ShuffleXPos]
+#Kellogs1=[-20, 20]
+#Kellogs2=[-10, 10]
+#Kellogs3=[-10, 10]
+#Kellogs4=[-15, 15]
+
+[ShuffleYPos]
+#Kellogs1=[61, 37, 13, -11, -35]
+#Kellogs2=[53, 16, -21]
+#Kellogs3=[49, 14, -21]
+#Kellogs4=[50, 14, -21]
+
+
+
+[Mods]
+#ImagePaths = "/home/vision/atWork/DataGen/DataGenBBoxes/boxes/"
+
+[World]
+Backgrounds = "/home/vision/atWork/DataGen/DataGenBBoxes/hdris/"
+
+[Path]
+PathObject = "Robot"
+
+[Mask]
+Mask_World = true
+
+# White
+Mask_False_Objects = "Barriertape"
+Mask_False_Mat = "Mask_False"
+Mask_False_Color = [1,1,1,1]
+
+# Black
+Mask_True_Objects=""
+Mask_True_Mat = "Mask_True"
+Mask_True_Color = [0,0,0,1]
+
+[Labels]
+small_black_alu= 0 
+small_grey_alu= 1 
+large_black_alu= 2 
+large_grey_alu= 3
+bolt= 4 
+small_nut= 5 
+large_nut= 6 
+plastic_tube= 7 
+bearing_box= 8 
+bearing= 9 
+axis= 10 
+distance_tube= 11 
+motor= 12
+blue_container= 13 
+red_container= 14
