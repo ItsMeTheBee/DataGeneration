@@ -2,8 +2,9 @@
 
 import bpy
 import numpy as np
+import bmesh
 
-def camera_view_bounds_2d(scene, camera_object, mesh_object, bounds=[0,0,0,0]):
+def camera_view_bounds_2d(scene, camera_object, mesh_object, bounds=None):
     """
     Returns camera space bounding box of the mesh object.
 
@@ -18,6 +19,8 @@ def camera_view_bounds_2d(scene, camera_object, mesh_object, bounds=[0,0,0,0]):
     """
 
     """ Get the inverse transformation matrix. """
+
+    
     matrix = camera_object.matrix_world.normalized().inverted()
     """ Create a new mesh data block, using the inverse transform matrix to undo any transformations. """
     #mesh = mesh_object.to_mesh(scene, True, 'RENDER')
@@ -67,19 +70,19 @@ def camera_view_bounds_2d(scene, camera_object, mesh_object, bounds=[0,0,0,0]):
     fac = render.resolution_percentage * 0.01
     dim_x = render.resolution_x * fac
     dim_y = render.resolution_y * fac """
-
-    if min_x < bounds[0]:
-        print("Bounding box of ", mesh_object.name ," outside of boundaries - min_x is ", min_x, " boundary is ", bounds[0])
-        return None
-    if min_y < bounds[1]:
-        print("Bounding box of ", mesh_object.name ," outside of boundaries - min_y is ", min_y, " boundary is ", bounds[1])
-        return None
-    if max_x > bounds[2]:
-        print("Bounding box of ", mesh_object.name ," outside of boundaries - max_x is ", max_x, " boundary is ", bounds[2])
-        return None
-    if max_y > bounds[3]:
-        print("Bounding box of ", mesh_object.name ," outside of boundaries - max_y is ", max_y, " boundary is ", bounds[3])
-        return None
+    if bounds:
+        if min_x < bounds[0]:
+            #print("Bounding box of ", mesh_object.name ," outside of boundaries - min_x is ", min_x, " boundary is ", bounds[0])
+            return None
+        if min_y < bounds[1]:
+            #print("Bounding box of ", mesh_object.name ," outside of boundaries - min_y is ", min_y, " boundary is ", bounds[1])
+            return None
+        if max_x > bounds[2]:
+            #print("Bounding box of ", mesh_object.name ," outside of boundaries - max_x is ", max_x, " boundary is ", bounds[2])
+            return None
+        if max_y > bounds[3]:
+            #print("Bounding box of ", mesh_object.name ," outside of boundaries - max_y is ", max_y, " boundary is ", bounds[3])
+            return None
 
     
     min_x = np.clip(min_x, 0.0, 1.0)
@@ -89,6 +92,7 @@ def camera_view_bounds_2d(scene, camera_object, mesh_object, bounds=[0,0,0,0]):
 
     """ Image is not in view if both bounding points exist on the same side """
     if min_x == max_x or min_y == max_y:
+        #print("Bounding box of ", mesh_object.name ," outside of view")
         return None
 
     # we use yolo format -> x and y of bounding box center, width and height of bounding box - everything in % of total picture size
@@ -99,7 +103,7 @@ def camera_view_bounds_2d(scene, camera_object, mesh_object, bounds=[0,0,0,0]):
     mid_y = 1- ((min_y + max_y) / 2)
     height = (max_y - min_y) 
 
-    print ("\n", 'mid x ',mid_x, ' mid y ', mid_y, 'width ',width, ' height ', height)
+    #print ("\n", 'mid x ',mid_x, ' mid y ', mid_y, 'width ',width, ' height ', height)
 
     return ([mid_x, mid_y, width, height])
 

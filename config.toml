@@ -1,0 +1,224 @@
+[General]
+Steps = 1
+Camera = "Camera"
+Visibility_Check = "Camera.001"
+Scene = "Scene"
+ShuffleWorld = true
+CreateYoloLabels = true
+CreateSegmentationMask = true
+AnimateAlongPath = false
+# creates images for every single object and stores them in seperate folders 
+SingleObjects = false
+
+[Objects]
+Names= ""
+Ignore= ["Camera","Camera.001", "Lamp"]
+Lamps = ""
+Camera = "Camera"
+
+[Mods]
+ImagePaths = "/home/sally/work/DataGen/DataGeneration/decoy/"
+
+[World]
+Backgrounds = "/mnt/Storage/work/DataGen/DataGeneration/hdris/"
+
+[Path]
+PathObject = "Robot"
+
+
+[Labels]
+Cube = 0
+Cube1 = 1
+Cube2 = 2
+Cube3 = 3
+Cube4 = 4
+
+# Define mods for every single object here
+# or define mods for groups in DataGeneration.py
+
+[Cube]
+id = 1
+visibility_thresh_factor = 0.45
+
+[Cube.Position]
+X = [-80, 80]
+Y = [-80, 80]
+Z = [-500, -200]
+
+[Cube.Rotation]
+X = [-15, 15]
+Y = [-15, 15]
+Z = [0, 360]
+
+[Cube.Color]
+NodeName="Principled BSDF"
+PropertyName="Base Color"
+value1 = [0.0, 0.0]
+value2 = [0.0, 0.0]
+value3 = [0.0, 0.3]
+mode = "hsv"
+
+[Cube.PrincipledBSDF]
+Metallic=[0.4, 0.9]
+Specular=[0.2, 0.6]
+SpecularTint=[0.0, 0.6]
+Roughness=[0.3, 1.0]
+Anisotropic=[0.0, 0.9]
+AnisotropicRotation=[0.0, 0.9]
+Sheen=[0.0, 0.2]
+SheenTint=[0.0, 0.2]
+Clearcoat=[0.0, 0.8]
+ClearcoatRoughness=[0.0, 0.8]
+
+[Cube1]
+id = 2
+visibility_thresh_factor = 0.45
+
+[Cube1.Position]
+X = [-80, 80]
+Y = [-80, 80]
+Z = [-500, -200]
+
+[Cube1.Rotation]
+X = [-15, 15]
+Y = [-15, 15]
+Z = [0, 360]
+
+[Cube1.Color]
+NodeName="Principled BSDF"
+PropertyName="Base Color"
+value1 = [0.1, 0.2]
+value2 = [0.9, 1.0]
+value3 = [0.8, 1.0]
+mode = "hsv"
+
+[Cube1.PrincipledBSDF]
+Metallic=[0.4, 0.9]
+Specular=[0.2, 0.6]
+SpecularTint=[0.0, 0.6]
+Roughness=[0.3, 1.0]
+Anisotropic=[0.0, 0.9]
+AnisotropicRotation=[0.0, 0.9]
+Sheen=[0.0, 0.2]
+SheenTint=[0.0, 0.2]
+Clearcoat=[0.0, 0.8]
+ClearcoatRoughness=[0.0, 0.8]
+
+[Cube2]
+id = 3
+visibility_thresh_factor = 0.45
+
+[Cube2.Position]
+X = [-80, 80]
+Y = [-80, 80]
+Z = [-500, -200]
+
+[Cube2.Rotation]
+X = [-15, 15]
+Y = [-15, 15]
+Z = [0, 360]
+
+[Cube2.Color]
+NodeName="Principled BSDF"
+PropertyName="Base Color"
+value1 = [0.3, 0.4]
+value2 = [0.9, 1.0]
+value3 = [0.8, 1.0]
+mode = "hsv"
+
+[Cube2.PrincipledBSDF]
+Metallic=[0.4, 0.9]
+Specular=[0.2, 0.6]
+SpecularTint=[0.0, 0.6]
+Roughness=[0.3, 1.0]
+Anisotropic=[0.0, 0.9]
+AnisotropicRotation=[0.0, 0.9]
+Sheen=[0.0, 0.2]
+SheenTint=[0.0, 0.2]
+Clearcoat=[0.0, 0.8]
+ClearcoatRoughness=[0.0, 0.8]
+
+[Cube3]
+id = 4
+visibility_thresh_factor = 0.45
+
+[Cube3.Position]
+X = [-80, 80]
+Y = [-80, 80]
+Z = [-500, -200]
+
+[Cube3.Rotation]
+X = [-15, 15]
+Y = [-15, 15]
+Z = [0, 360]
+
+[Cube3.Color]
+NodeName="Principled BSDF"
+PropertyName="Base Color"
+value1 = [0.5, 0.6]
+value2 = [0.9, 1.0]
+value3 = [0.8, 1.0]
+mode = "hsv"
+
+[Cube3.PrincipledBSDF]
+Metallic=[0.4, 0.9]
+Specular=[0.2, 0.6]
+SpecularTint=[0.0, 0.6]
+Roughness=[0.3, 1.0]
+Anisotropic=[0.0, 0.9]
+AnisotropicRotation=[0.0, 0.9]
+Sheen=[0.0, 0.2]
+SheenTint=[0.0, 0.2]
+Clearcoat=[0.0, 0.8]
+ClearcoatRoughness=[0.0, 0.8]
+
+[Cube4]
+id = 5
+visibility_thresh_factor = 0.45
+
+[Cube4.Position]
+X = [-80, 80]
+Y = [-80, 80]
+Z = [-500, -200]
+
+[Cube4.Rotation]
+X = [-15, 15]
+Y = [-15, 15]
+Z = [0, 360]
+
+[Cube4.Color]
+NodeName="Principled BSDF"
+PropertyName="Base Color"
+value1 = [0.8, 0.9]
+value2 = [0.9, 1.0]
+value3 = [0.8, 1.0]
+mode = "hsv"
+
+[Cube4.PrincipledBSDF]
+Metallic=[0.4, 0.9]
+Specular=[0.2, 0.6]
+SpecularTint=[0.0, 0.6]
+Roughness=[0.3, 1.0]
+Anisotropic=[0.0, 0.9]
+AnisotropicRotation=[0.0, 0.9]
+Sheen=[0.0, 0.2]
+SheenTint=[0.0, 0.2]
+Clearcoat=[0.0, 0.8]
+ClearcoatRoughness=[0.0, 0.8]
+
+[Decoy1]
+# set id to 0 for background
+id = 0
+visibility_thresh_factor = 0.0
+
+[Decoy1.Position]
+X = [-80, 80]
+Y = [-80, 80]
+Z = [-500, -200]
+
+[Decoy1.Rotation]
+X = [-15, 15]
+Y = [-15, 15]
+Z = [0, 360]
+
+

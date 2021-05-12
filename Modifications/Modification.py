@@ -8,3 +8,17 @@ class Modification:
 
 	def Action(self, obj):
 		pass
+
+	def performPostProcessing(self):
+		for object in self.Objects:
+			self.PostProcessing(object)
+	
+	def PostProcessing(self, obj):
+		pass
+
+	def performPreProcessing(self):
+		for object in self.Objects:
+			self.PreProcessing(object)
+	
+	def PreProcessing(self, obj):
+		pass

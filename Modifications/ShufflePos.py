@@ -6,13 +6,13 @@ from mathutils.bvhtree import BVHTree
 from Modifications.Modification import Modification
 
 class ShufflePos(Modification):
-	def __init__(self, range=[-5, 5], objects=[], hide_on_intersection = False):
+	def __init__(self, range=[], objects=[], hide_on_intersection = False, multi_range = False):
 		self.hide = hide_on_intersection
 		self.Range = range
+		self.multiRange = multi_range
 		super(ShufflePos, self).__init__(objects)
 
 	def performAction(self):
-		print("performing action")
 		random.shuffle(self.Objects)
 		object_check = list()
 		for obj in self.Objects:
@@ -22,6 +22,8 @@ class ShufflePos(Modification):
 					check = self.are_objects_intersecting(obj, obj_check)
 					if check:
 						obj.hide_render = True
+						#for child in obj.children:
+						#	child.hide_render = True
 						bpy.context.view_layer.update()
 				if obj.hide_render is False:
 					object_check.append(obj)
@@ -47,18 +49,41 @@ class ShufflePos(Modification):
 class ShuffleXPos(ShufflePos):
 	def Action(self, obj):
 		obj.hide_render = False
-		obj.location.x = 0.01 * random.randrange(self.Range[0], self.Range[1])
-		bpy.context.view_layer.update()
+		if self.multiRange:
+			Range = random.choice(self.Range)
+			if isinstance(Range, list): 
+				obj.location.x = 0.01 * random.uniform(Range[0], Range[1])
+			else:
+				obj.location.x = 0.01 * Range
+			bpy.context.view_layer.update()
+		else:
+			obj.location.x = 0.01 * random.uniform(self.Range[0], self.Range[1])
+			bpy.context.view_layer.update()
 
 class ShuffleYPos(ShufflePos):
 	def Action(self, obj):
 		obj.hide_render = False
-		obj.location.y = 0.01 * random.randrange(self.Range[0], self.Range[1])
-		bpy.context.view_layer.update()
+		if self.multiRange:
+			Range = random.choice(self.Range)
+			if isinstance(Range, list): 
+				obj.location.y = 0.01 * random.uniform(Range[0], Range[1])
+			else:
+				obj.location.y = 0.01 * Range
+			bpy.context.view_layer.update()
+		else:
+			obj.location.y = 0.01 * random.uniform(self.Range[0], self.Range[1])
+			bpy.context.view_layer.update()
 
 class ShuffleZPos(ShufflePos):
 	def Action(self, obj):
-		print("shuffling Z")
 		obj.hide_render = False
-		obj.location.z = 0.01 * random.randrange(self.Range[0], self.Range[1])
-		bpy.context.view_layer.update()
+		if self.multiRange:
+			Range = random.choice(self.Range)
+			if isinstance(Range, list): 
+				obj.location.z = 0.01 * random.uniform(Range[0], Range[1])
+			else:
+				obj.location.z = 0.01 * Range
+			bpy.context.view_layer.update()
+		else:
+			obj.location.z = 0.01 * random.uniform(self.Range[0], self.Range[1])
+			bpy.context.view_layer.update()

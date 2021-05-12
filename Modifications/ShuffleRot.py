@@ -7,13 +7,13 @@ from mathutils.bvhtree import BVHTree
 from Modifications.Modification import Modification
 
 class ShuffleRot(Modification):
-	def __init__(self, range=[-1, 1], objects=[], hide_on_intersection = False):
+	def __init__(self, range=[-1, 1], objects=[], hide_on_intersection = False,  multi_range = False):
 		self.hide = hide_on_intersection
 		self.Range = range
+		self.multiRange = multi_range
 		super(ShuffleRot, self).__init__(objects)
 	
 	def performAction(self):
-		print("performing action")	
 		random.shuffle(self.Objects)
 		object_check = list()
 		for obj in self.Objects:
@@ -23,6 +23,8 @@ class ShuffleRot(Modification):
 					check = self.are_objects_intersecting(obj, obj_check)
 					if check:
 						obj.hide_render = True
+						#for child in obj.children:
+						#	child.hide_render = True
 						bpy.context.view_layer.update()
 				if obj.hide_render is False:
 					object_check.append(obj)
@@ -49,17 +51,39 @@ class ShuffleRot(Modification):
 class ShuffleXRot(ShuffleRot):
 	def Action(self, obj):
 		obj.hide_render = False
-		obj.rotation_euler.x = 0.01 * random.randrange(self.Range[0], self.Range[1]) * 180/math.pi
+		if self.multiRange:
+			Range = random.choice(self.Range)
+			if isinstance(Range, list): 
+				obj.rotation_euler.x = math.radians(random.uniform(Range[0], Range[1]))
+			else:
+				obj.rotation_euler.x = math.radians(Range)
+		else:
+			obj.rotation_euler.x = math.radians(random.uniform(self.Range[0], self.Range[1]))
 		bpy.context.view_layer.update()
 
 class ShuffleYRot(ShuffleRot):
 	def Action(self, obj):
 		obj.hide_render = False
-		obj.rotation_euler.y = 0.01 * random.randrange(self.Range[0], self.Range[1])
+		if self.multiRange:
+			Range = random.choice(self.Range)
+			if isinstance(Range, list): 
+				obj.rotation_euler.y = math.radians(random.uniform(Range[0], Range[1]))
+			else:
+				obj.rotation_euler.y = math.radians(Range)
+		else:
+			obj.rotation_euler.y = math.radians(random.uniform(self.Range[0], self.Range[1]))
 		bpy.context.view_layer.update()
 
 class ShuffleZRot(ShuffleRot):
 	def Action(self, obj):
 		obj.hide_render = False
-		obj.rotation_euler.z = 0.01 * random.randrange(self.Range[0], self.Range[1])
+		if self.multiRange:
+			Range = random.choice(self.Range)
+			if isinstance(Range, list): 
+				obj.rotation_euler.z = math.radians(random.uniform(Range[0], Range[1]))
+				print("Set rotation of ", obj.name, " to ", obj.rotation_euler.z)
+			else:
+				obj.rotation_euler.z = math.radians(Range)
+		else:
+			obj.rotation_euler.z = math.radians(random.uniform(self.Range[0], self.Range[1]))
 		bpy.context.view_layer.update()
