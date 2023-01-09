@@ -8,6 +8,7 @@ import bmesh
 import time
 import toml
 
+
 def zoom_to_g(scene, camera, object):
     camera.location, foo = camera.camera_fit_coords(scene, [co for corner in object.bound_box for co in corner])
 

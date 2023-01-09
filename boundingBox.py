@@ -4,6 +4,7 @@ import bpy
 import numpy as np
 import bmesh
 
+
 def camera_view_bounds_2d(scene, camera_object, mesh_object, bounds=None):
     """
     Returns camera space bounding box of the mesh object.

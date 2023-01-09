@@ -1,31 +1,48 @@
 [General]
-Steps = 1
+Steps = 5
 Camera = "Camera"
 Visibility_Check = "Camera.001"
 Scene = "Scene"
 ShuffleWorld = true
 CreateYoloLabels = true
+CreateBOPLabels = true
 CreateSegmentationMask = true
+# if a animation is predefined, this will used the animated frames and still perform modifications
 AnimateAlongPath = false
-# creates images for every single object and stores them in seperate folders 
+# create images for every single object and store them in seperate folders 
 SingleObjects = false
+
+[Files]
+# which folder to safe all the files in
+Folder = "test"
+
+[Config]
+MultiConfig = false
+Folder = "configs"
+
+# Define object groups, for example if all decoys should have the same modifications
+# Names is used for regular objects that should be labeled
+# Instead of writing all object names you can enter the objects to ignore - all other objects will be loaded
+# Special and Decoy can be used when custom functions for these classes are implemented in DataGeneration.py
+# Right now the properties specified down below will be used to configure the Modifications for all groups
+# So you can also load them as obejcts - it makes no difference
 
 [Objects]
 Names= ""
-Ignore= ["Camera","Camera.001", "Lamp"]
+Ignore= ["Camera","Camera.001", "Lamp", "Decoy1"]
 Lamps = ""
 Camera = "Camera"
+Special= ""
+Decoy= ["Decoy1"]  
 
-[Mods]
-ImagePaths = "/home/sally/work/DataGen/DataGeneration/decoy/"
-
+# Define the folder for hdri bachgrounds, as well as the min and max strength (illumination) of the hdris
 [World]
-Backgrounds = "/mnt/Storage/work/DataGen/DataGeneration/hdris/"
+Backgrounds = "/home/vision/Work/DataGen/DataGenMaster/hdris/"
+[World.Strength]
+Min = 0.8
+Max = 1.3
 
-[Path]
-PathObject = "Robot"
-
-
+# Define Yolo labels for the objects - no label = no entry in label file
 [Labels]
 Cube = 0
 Cube1 = 1
@@ -33,17 +50,29 @@ Cube2 = 2
 Cube3 = 3
 Cube4 = 4
 
+
 # Define mods for every single object here
 # or define mods for groups in DataGeneration.py
+# Id = segmentation mask pixel value - Id 0 = no segmentation mask
+# Visibility thresh = how much % of the object needs to be visible, if less is visible it wont be rendered
+# Position: Normed to 1m --> The values are scaled with the given axis with 1m being the reference
 
 [Cube]
 id = 1
-visibility_thresh_factor = 0.45
+visibility_thresh_factor = 0.2
 
 [Cube.Position]
-X = [-80, 80]
-Y = [-80, 80]
-Z = [-500, -200]
+X = [-0.4, 0.4]
+X_normed_to_1m = 'Z'
+X_hide_on_intersection = true
+
+Y = [-0.14, 0.14]
+Y_normed_to_1m = 'Z'
+Y_hide_on_intersection = true
+
+Z = [-1.4, -4.0]
+Z_normed_to_1m = ''
+Z_hide_on_intersection = true
 
 [Cube.Rotation]
 X = [-15, 15]
@@ -57,6 +86,7 @@ value1 = [0.0, 0.0]
 value2 = [0.0, 0.0]
 value3 = [0.0, 0.3]
 mode = "hsv"
+material_name = "Material"
 
 [Cube.PrincipledBSDF]
 Metallic=[0.4, 0.9]
@@ -72,12 +102,21 @@ ClearcoatRoughness=[0.0, 0.8]
 
 [Cube1]
 id = 2
-visibility_thresh_factor = 0.45
+visibility_thresh_factor = 0.2
 
 [Cube1.Position]
-X = [-80, 80]
-Y = [-80, 80]
-Z = [-500, -200]
+X = [-0.4, 0.4]
+X_normed_to_1m = 'Z'
+X_hide_on_intersection = true
+
+Y = [-0.14, 0.14]
+Y_normed_to_1m = 'Z'
+Y_hide_on_intersection = true
+
+Z = [-1.4, -4.0]
+Z_normed_to_1m = ''
+Z_hide_on_intersection = true
+
 
 [Cube1.Rotation]
 X = [-15, 15]
@@ -91,6 +130,7 @@ value1 = [0.1, 0.2]
 value2 = [0.9, 1.0]
 value3 = [0.8, 1.0]
 mode = "hsv"
+material_name = "Material.001"
 
 [Cube1.PrincipledBSDF]
 Metallic=[0.4, 0.9]
@@ -106,12 +146,20 @@ ClearcoatRoughness=[0.0, 0.8]
 
 [Cube2]
 id = 3
-visibility_thresh_factor = 0.45
+visibility_thresh_factor = 0.2
 
 [Cube2.Position]
-X = [-80, 80]
-Y = [-80, 80]
-Z = [-500, -200]
+X = [-0.4, 0.4]
+X_normed_to_1m = 'Z'
+X_hide_on_intersection = true
+
+Y = [-0.14, 0.14]
+Y_normed_to_1m = 'Z'
+Y_hide_on_intersection = true
+
+Z = [-1.4, -4.0]
+Z_normed_to_1m = ''
+Z_hide_on_intersection = true
 
 [Cube2.Rotation]
 X = [-15, 15]
@@ -125,6 +173,7 @@ value1 = [0.3, 0.4]
 value2 = [0.9, 1.0]
 value3 = [0.8, 1.0]
 mode = "hsv"
+material_name = "Material.002"
 
 [Cube2.PrincipledBSDF]
 Metallic=[0.4, 0.9]
@@ -140,12 +189,21 @@ ClearcoatRoughness=[0.0, 0.8]
 
 [Cube3]
 id = 4
-visibility_thresh_factor = 0.45
+visibility_thresh_factor = 0.2
 
 [Cube3.Position]
-X = [-80, 80]
-Y = [-80, 80]
-Z = [-500, -200]
+X = [-0.4, 0.4]
+X_normed_to_1m = 'Z'
+X_hide_on_intersection = true
+
+Y = [-0.14, 0.14]
+Y_normed_to_1m = 'Z'
+Y_hide_on_intersection = true
+
+Z = [-1.4, -4.0]
+Z_normed_to_1m = ''
+Z_hide_on_intersection = true
+
 
 [Cube3.Rotation]
 X = [-15, 15]
@@ -159,6 +217,7 @@ value1 = [0.5, 0.6]
 value2 = [0.9, 1.0]
 value3 = [0.8, 1.0]
 mode = "hsv"
+material_name = "Material.003"
 
 [Cube3.PrincipledBSDF]
 Metallic=[0.4, 0.9]
@@ -174,12 +233,21 @@ ClearcoatRoughness=[0.0, 0.8]
 
 [Cube4]
 id = 5
-visibility_thresh_factor = 0.45
+visibility_thresh_factor = 0.2
 
 [Cube4.Position]
-X = [-80, 80]
-Y = [-80, 80]
-Z = [-500, -200]
+X = [-0.4, 0.4]
+X_normed_to_1m = 'Z'
+X_hide_on_intersection = true
+
+Y = [-0.14, 0.14]
+Y_normed_to_1m = 'Z'
+Y_hide_on_intersection = true
+
+Z = [-1.4, -4.0]
+Z_normed_to_1m = ''
+Z_hide_on_intersection = true
+
 
 [Cube4.Rotation]
 X = [-15, 15]
@@ -193,6 +261,7 @@ value1 = [0.8, 0.9]
 value2 = [0.9, 1.0]
 value3 = [0.8, 1.0]
 mode = "hsv"
+material_name = "Material.004"
 
 [Cube4.PrincipledBSDF]
 Metallic=[0.4, 0.9]
@@ -212,13 +281,24 @@ id = 0
 visibility_thresh_factor = 0.0
 
 [Decoy1.Position]
-X = [-80, 80]
-Y = [-80, 80]
-Z = [-500, -200]
+X = [-0.4, 0.4]
+X_normed_to_1m = 'Z'
+X_hide_on_intersection = true
+
+Y = [-0.14, 0.14]
+Y_normed_to_1m = 'Z'
+Y_hide_on_intersection = true
+
+Z = [-1.4, -4.0]
+Z_normed_to_1m = ''
+Z_hide_on_intersection = true
+
 
 [Decoy1.Rotation]
 X = [-15, 15]
 Y = [-15, 15]
 Z = [0, 360]
+
+
 
 

@@ -1,3 +1,5 @@
+### Base class for all modifications
+
 class Modification:
 	def __init__(self, objects=[]):
 		self.Objects = objects
