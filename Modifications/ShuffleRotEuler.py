@@ -3,19 +3,11 @@ import random
 import bmesh
 import mathutils
 import math
+import Utils
 from mathutils.bvhtree import BVHTree
 from Modifications.Modification import Modification
 
-def hide_obj_and_children(obj):
-    for child in obj.children:
-        hide_obj_and_children(child)
-    obj.hide_render = True
-
-def show_obj_and_children(obj):
-	for child in obj.children:
-		show_obj_and_children(child)
-	obj.hide_render = False
-
+### Shuffle the rotation of an object using euler representation
 class ShuffleRotEuler(Modification):
 	def __init__(self, range=[-1, 1], objects=[], hide_on_intersection = False,  multi_range = False):
 		self.hide = hide_on_intersection
@@ -32,9 +24,7 @@ class ShuffleRotEuler(Modification):
 				for obj_check in object_check:
 					check = self.are_objects_intersecting(obj, obj_check)
 					if check:
-						hide_obj_and_children(obj)
-						#for child in obj.children:
-						#	child.hide_render = True
+						Utils.hide_obj_and_children(obj)
 						bpy.context.view_layer.update()
 				if obj.hide_render is False:
 					object_check.append(obj)
@@ -91,7 +81,6 @@ class ShuffleZRotEuler(ShuffleRotEuler):
 			Range = random.choice(self.Range)
 			if isinstance(Range, list): 
 				obj.rotation_euler.z = math.radians(random.uniform(Range[0], Range[1]))
-				print("Set rotation of ", obj.name, " to ", obj.rotation_euler.z)
 			else:
 				obj.rotation_euler.z = math.radians(Range)
 		else:

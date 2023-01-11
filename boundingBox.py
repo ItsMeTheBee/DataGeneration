@@ -5,6 +5,13 @@ import numpy as np
 import bmesh
 
 
+### These functions are used to figure out the bounding box of every object
+### The object is transformed to the camera coordinate system
+### Then the vertices of the object are iterated and normalized themm to the camera view frame
+### The min and max functions obtain the normalized extreme points of the object 
+### The values are then clipped to be inside 0.0 and 1.0 ( = inside the camera frame)
+### For the YOLO format these can be used directly instead of calculating the pixel values of these normalized values
+
 def camera_view_bounds_2d(scene, camera_object, mesh_object, bounds=None):
     """
     Returns camera space bounding box of the mesh object.
@@ -71,6 +78,8 @@ def camera_view_bounds_2d(scene, camera_object, mesh_object, bounds=None):
     fac = render.resolution_percentage * 0.01
     dim_x = render.resolution_x * fac
     dim_y = render.resolution_y * fac """
+
+    # Only return a bounding boy of the object is within the given bounds
     if bounds:
         if min_x < bounds[0]:
             #print("Bounding box of ", mesh_object.name ," outside of boundaries - min_x is ", min_x, " boundary is ", bounds[0])

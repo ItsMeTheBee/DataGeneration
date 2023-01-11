@@ -8,6 +8,14 @@ import bmesh
 import time
 import toml
 
+### A bunch of functions to find out how much of the object is visible
+### The big problem is that the select function of blender does not obtain all vertices (=points) of the object it the camera is too far away / the points are too dense
+### So we use another camera, a duplicate of the render camera that is locked to the same location but add a "Track to" constraint
+### This causes the camera to rotate to the tracked object in order to focus it
+### First the camera is prepared by setting the constraint to the object and zooming into the obejct so that is fills most of the camera view whiel still being fully visible
+### Then the object is prepared for selection by activation only this object and going into edit mode
+### Now the select function ususally gets all object vertices
+### With the selected vertices, edges and faces we can find out how much of the object is visible by dividing that with the total amount of verts, edges and faces
 
 def zoom_to_g(scene, camera, object):
     camera.location, foo = camera.camera_fit_coords(scene, [co for corner in object.bound_box for co in corner])
@@ -144,6 +152,8 @@ def select_camera_view(scene, camera_object, mesh_object):
     # set camera view
     override = getOverride(bpy.context)
     bpy.ops.view3d.view_camera(override)
+
+    # prepare the object for selection
     prepareForSelection(override)
 
     # get camera borders in view coordinates

@@ -8,25 +8,8 @@ from Modifications.Modification import Modification
 import os
 from numpy.random import choice
 
-"""
-class ShuffleMaterial(Modification):
-	def performAction(self):
-		for obj in self.Objects:
-			self.Action(obj)
-
-# shuffles through object materials 1 to n and sets the selected material to position 0
-# therefore set a placeholder material to slot 0 and fill all the other slots with the desired materials
-class ShuffleMaterials(ShuffleMaterial):
-	def Action(self, obj):
-		try:
-			# these are all materials of this object
-			all_materials  = obj.data.materials				# use this to get all materials in the whole scene: all_materials = bpy.data.materials
-			random_material = random.choice(all_materials[1:])
-			obj.data.materials[0] = random_material
-		except:
-			print("Unable to shuffle materials of ", obj.name, "\nThe object might have no materials.")
-
-"""
+# Shuffles values of a vector propertry using a dict with key = property index and value = randomized value range
+# This can be used when a texture is mapped to an object to change the mapping location, rotation and scale
 
 class ShuffleVector(Modification):
     def __init__(self,  objects=[], node_name="", property_name="", values=dict()):
@@ -39,17 +22,13 @@ class ShuffleVector(Modification):
         try:
             mat = obj.data.materials[0]
             nodes = mat.node_tree.nodes
-            orig_values = nodes[self.node_name].inputs[self.property_name].default_value
+            cur_values = nodes[self.node_name].inputs[self.property_name].default_value
             for key, value in self.values.items():
-                print(int(key))
-                if type(orig_values) is mathutils.Euler:
-                    orig_values[int(key)] = math.radians(random.uniform(int(value[0]), int(value[1])))
-                    print("rot")
+                if type(cur_values) is mathutils.Euler:
+                    cur_values[int(key)] = math.radians(random.uniform(int(value[0]), int(value[1])))
                 else:
-                    orig_values[int(key)] = random.uniform(int(value[0]), int(value[1]))
-                    print("num")
-            #nodes[self.node_name].inputs[self.property_name].default_value = random.uniform(self.value_range[0], self.value_range[1])
-            #print(obj.name," ", self.property_name, " set to ", nodes[self.node_name].inputs[self.property_name].default_value)
+                    cur_values[int(key)] = random.uniform(int(value[0]), int(value[1]))
+            nodes[self.node_name].inputs[self.property_name].default_value = cur_values
 
         except Exception as e: 
             print(e)

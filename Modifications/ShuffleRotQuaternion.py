@@ -3,16 +3,12 @@ import random
 import bmesh
 import mathutils
 import math
+import Utils
 from mathutils.bvhtree import BVHTree
 from Modifications.Modification import Modification
 from scipy.spatial.transform import Rotation as R
 
-def hide_obj_and_children(obj):
-    for child in obj.children:
-        hide_obj_and_children(child)
-        obj.hide_render = True
-
-
+### Shuffle the rotation of an object using the quaternion representation
 class ShuffleRotQuaternion(Modification):
 	def __init__(self, range_x=[-1, 1], range_y=[-1, 1], range_z=[-1, 1], objects=[], hide_on_intersection = False,  multi_range = False):
 		self.hide = hide_on_intersection
@@ -21,7 +17,6 @@ class ShuffleRotQuaternion(Modification):
 		self.RangeZ = range_z
 		self.Ranges = [self.RangeX, self.RangeY, self.RangeZ]
 		self.multiRange = multi_range
-		#print("INIT QUAT SUFFLE WITH ", self.Ranges)
 		super(ShuffleRotQuaternion, self).__init__(objects)
 	
 	def performAction(self):
@@ -33,9 +28,7 @@ class ShuffleRotQuaternion(Modification):
 				for obj_check in object_check:
 					check = self.are_objects_intersecting(obj, obj_check)
 					if check:
-						hide_obj_and_children(obj)
-						#for child in obj.children:
-						#	child.hide_render = True
+						Utils.hide_obj_and_children(obj)
 						bpy.context.view_layer.update()
 				if obj.hide_render is False:
 					object_check.append(obj)
@@ -72,7 +65,6 @@ class ShuffleRotQuaternion(Modification):
 			else:
 				rot_values.append( random.uniform(cur_range[0], cur_range[1]) )
 
-		print("ROT VALUES ARE ", rot_values)
 		rot = R.from_euler('xyz', rot_values, degrees = True)
 
 		bpy.data.objects[obj.name].rotation_mode = 'QUATERNION'

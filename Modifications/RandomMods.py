@@ -8,12 +8,10 @@ from . import Utils
 class RandomDisappear(Modification):
     def __init__(self,  objects=[], probability=0.5):
         self.probability  = probability
-        print("ADDED DISAPPER MOD WITH PROB ", probability)
         super(RandomDisappear, self).__init__(objects)
 
     def Action(self, obj):
         chance = choice([0,1], 1,replace=False, p=[1-self.probability, self.probability] )
-        print("CHANCE ", chance)
         if chance:
             Utils.hide_obj_and_children(obj)
 

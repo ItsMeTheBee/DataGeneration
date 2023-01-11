@@ -6,7 +6,7 @@ from mathutils.bvhtree import BVHTree
 from Modifications.Modification import Modification
 from . import Utils
 
-# currently hyde_on_intersection works on all other children of the same parent - change that to accept other objects
+# currently hide_on_intersection works on all other children of the same parent - change that to accept other objects
 class ShufflePos(Modification):
 	def __init__(self, range=[], objects=[],  hide_on_intersection = True, multi_range = False, scale_with = ""):
 		self.hide = hide_on_intersection
