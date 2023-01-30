@@ -3,7 +3,7 @@ import random
 import bmesh
 import mathutils
 import math
-import Utils
+from . import Utils
 from mathutils.bvhtree import BVHTree
 from Modifications.Modification import Modification
 
