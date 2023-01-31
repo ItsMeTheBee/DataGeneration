@@ -31,6 +31,7 @@ from Modifications.ShuffleRotEuler import ShuffleXRotEuler, ShuffleYRotEuler, Sh
 from Modifications.ShuffleRotQuaternion import ShuffleRotQuaternion
 from Modifications.ShuffleColor import ShuffleRGBColor, ShuffleBackground, ShuffleImageTexture, ShuffleColorSpace
 from Modifications.Mask import  MaskComposition
+from Modifications.Depth import  DepthComposition
 from Modifications.VisibilityMods import HideInRGB
 from Modifications.RandomMods import RandomDisappear
 from Modifications.CameraMods import ShuffleFocalLength
@@ -40,7 +41,7 @@ from Modifications.ShuffleVector import ShuffleVector
 from Modifications.MeshMods import CreateHull
 
 ## Global variable for the location of the configuration file
-base_config = "/home/vision/Work/DataGen/DataGeneration/config.toml"
+base_config = "/home/vision/Work/DataGen/DataGeneration/atWork/configAtWork.toml"
 #config = toml.load(base_config)
 
 
@@ -81,7 +82,7 @@ def hideInvisibleObjects(scene, camera_object, visibility_camera, mesh_objects, 
 
 # ____________________________________________ Create image
 
-def render(scene, camera_object, mesh_objects, path="/home/data/", file_prefix="rgb"):
+def render(path="/home/data/", file_prefix="rgb"):
 	# Rendering
 	# https://blender.stackexchange.com/questions/1101/blender-rendering-automation-build-script
 
@@ -364,6 +365,15 @@ def createMaskMods(objects, path, config):
 				pass
 	return mods
 
+
+def createDepthMods(path, config):
+	mods = list()
+	empty_obj_list = list()
+	modMask = DepthComposition(empty_obj_list, path = path)
+	mods.append(modMask)
+	
+	return mods
+
 def createWorldMods(config):
 	world_obj= list()
 	world_mods= list()
@@ -407,6 +417,7 @@ def batch_render(config_dict):
 	print("BBOX PWTH ", config_dict["bbox_path"])
 	print("SEG PWTH ", config_dict["seg_path"])
 	print("BOP PWTH ", config_dict["bop_path"])
+	print("DEPTH PWTH ", config_dict["depth_path"])
 
 	scene = config_dict["scene"]
 
@@ -419,6 +430,12 @@ def batch_render(config_dict):
 		for maskMod in maskMods:
 			maskMod.performPreProcessing()
 	
+	depthMods = list()
+	if config_dict["depth"]:
+		depthMods = createDepthMods(config_dict["depth_path"], config_dict["config"])
+		for depthMod in depthMods:
+			depthMod.performPreProcessing()
+
 	#available_steps = range(get_latest_index(render_path), steps+1)
 	available_steps = range(get_latest_index(config_dict["render_path"]), config_dict["steps"]+1)
 	if config_dict["path"]:
@@ -456,10 +473,25 @@ def batch_render(config_dict):
 			render.use_compositing = True
 			render.use_sequencer = False      
 			
-			render(scene, config_dict["camera"], config_dict["label_objs"], config_dict["render_path"], file_prefix)
+		if config_dict["depth"]:
+			for depthMod in depthMods:
+				depthMod.performAction(file_prefix)  
 
-			for maskMod in maskMods:
-				maskMod.performPostProcessing()	
+			render.use_compositing = True
+			render.use_sequencer = False
+
+		render(config_dict["render_path"], file_prefix)
+
+		for maskMod in maskMods:
+			maskMod.performPostProcessing()	
+
+
+		for depthMod in depthMods:
+			depthMod.performPostProcessing()	
+
+		if not config_dict["seg_mask"] and not config_dict["depth"]:
+			render(config_dict["render_path"], file_prefix)
+			
 
 	print("DONE! =)")
 
@@ -511,6 +543,7 @@ def parse_config_and_render(config):
 	out_dict["yolo_labels"] = config['General']['CreateYoloLabels']
 	out_dict["bop_labels"] = config['General']['CreateBOPLabels']
 	out_dict["seg_mask"] = config['General']['CreateSegmentationMask']
+	out_dict["depth"] = config['General']['CreateDepth']
 	out_dict["path"] = config['General']['AnimateAlongPath']
 
 
@@ -535,6 +568,7 @@ def parse_config_and_render(config):
 				out_dict["bbox_path"] = os.path.join(base_dir, config['Files']['Folder'], str(config['Labels'][obj.name]), "bbox_labels")
 				out_dict["bop_path"] = os.path.join(base_dir, config['Files']['Folder'], str(config['Labels'][obj.name]), "")
 				out_dict["seg_path"] = os.path.join(base_dir, config['Files']['Folder'], str(config['Labels'][obj.name]), "merged_masks")
+				out_dict["depth_path"] = os.path.join(base_dir, config['Files']['Folder'], str(config['Labels'][obj.name]), "depth")
 
 				if not os.path.exists(out_dict["render_path"]):
 					os.makedirs(out_dict["render_path"])
@@ -547,6 +581,9 @@ def parse_config_and_render(config):
 
 				if not os.path.exists(out_dict["seg_path"]):
 					os.makedirs(out_dict["seg_path"])	
+
+				if not os.path.exists(out_dict["depth_path"]):
+					os.makedirs(out_dict["depth_path"])	
 
 
 				hideAllObjects(mesh_obj)
@@ -574,6 +611,7 @@ def parse_config_and_render(config):
 		out_dict["bbox_path"] = os.path.join(base_dir, config['Files']['Folder'], "bbox_labels")
 		out_dict["bop_path"] = os.path.join(base_dir, config['Files']['Folder'], "")
 		out_dict["seg_path"] = os.path.join(base_dir, config['Files']['Folder'], "merged_masks")
+		out_dict["depth_path"] = os.path.join(base_dir, config['Files']['Folder'], "depth")
 
 		if not os.path.exists(out_dict["render_path"]):
 			os.makedirs(out_dict["render_path"])
@@ -587,6 +625,9 @@ def parse_config_and_render(config):
 		if not os.path.exists(out_dict["seg_path"]):
 			os.makedirs(out_dict["seg_path"])	
 		
+		if not os.path.exists(out_dict["depth_path"]):
+			os.makedirs(out_dict["depth_path"])	
+
 		batch_render(out_dict)
 
 
