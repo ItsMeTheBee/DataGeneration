@@ -103,7 +103,8 @@ The general section specifies several global aspects of the data generation
 - ShuffleWorld: Whether the HDRIs in the world node will be shuffled (Bool)
 - CreateYoloLabels: Whether bounding box labels in YOLO fomat will be generated (Bool)
 - CreateSegmentationMask: Whether segmemtation mask images will be generated (Bool)
-- CreateBOPLabels: Whether 6DoF labels in BOP format will be generated
+- CreateBOPLabels: Whether 6DoF labels in BOP format will be generated (Bool)
+- CreateDepth: Whether depth images (similar to RealSense D435) will be generated (Bool)
 - AnimateAlongPath: Whether the frames of an animation will be iterated during generation (Bool)
 - SingleObjects: Whether every object will be rendered and labeled stand-alone in a dedicated folder (Bool)
 
